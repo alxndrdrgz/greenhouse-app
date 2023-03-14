@@ -1,8 +1,28 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
-import LandingPage from '@/components/LandingPage'
+import WeatherForecast from '../components/WeatherForecast';
+import axios from 'axios'
 
-const inter = Inter({ subsets: ['latin'] })
+const torontoCoordinates = {
+  long: -79.3832,
+  lat: 43.6532,
+}
+
+export async function getStaticProps() {
+  const apiKey= process.env.OPEN_WEATHER_API_KEY;
+
+  const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${torontoCoordinates.lat}&lon=${torontoCoordinates.long}&appid=${apiKey}`);
+  
+  const data = res.data;
+
+  return {
+    props: {
+      data: data,
+    }, 
+  }
+
+}
+
 
 export default function Home() {
   return (
@@ -14,7 +34,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-          <LandingPage user={true}/>
+          <WeatherForecast />
       </main>
     </>
   )
