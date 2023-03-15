@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import WeatherForecast from '../components/WeatherForecast';
 import axios from 'axios'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const torontoCoordinates = {
   long: -79.3832,
@@ -11,19 +11,18 @@ const torontoCoordinates = {
 export async function getStaticProps() {
   const apiKey= process.env.OPEN_WEATHER_API_KEY;
 
-  const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${torontoCoordinates.lat}&lon=${torontoCoordinates.long}&appid=${apiKey}`);
+  const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${torontoCoordinates.lat}&lon=${torontoCoordinates.long}&appid=${apiKey}&units=metric`);
   
   const data = res.data;
-
   return {
     props: {
       data: data,
     }, 
   }
-
 }
 
 export default function Home({ data } : {data : {}}) {
+  const [user, setUser] = useState(undefined);
 
   return (
     <>
@@ -34,10 +33,15 @@ export default function Home({ data } : {data : {}}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        {
+          user && 
+          <div>
+            Hi, {user}! 
+          </div>
+        }
         <div>
-
+          <WeatherForecast data={data} />
         </div>
-        <WeatherForecast data={data} />
       </main>
     </>
   )
