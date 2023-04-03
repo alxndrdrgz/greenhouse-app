@@ -2,6 +2,7 @@ import Head from 'next/head';
 import WeatherForecast from '../components/WeatherForecast';
 import axios from 'axios'
 import { useState } from 'react';
+import SeedInventoryTable from '../components/SeedInventoryTable';
 
 const torontoCoordinates = {
   long: -79.3832,
@@ -41,6 +42,9 @@ export default function Home({ data } : {data : {}}) {
         }
         <div>
           <WeatherForecast data={data} />
+        </div>
+        <div>
+          <SeedInventoryTable/>
         </div>
       </main>
     </>
